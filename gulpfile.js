@@ -105,7 +105,7 @@ gulp.task('html', function(){
 
 // process styles files and return one css file.
 gulp.task('styles', function(){
-    return gulpSrc(['./dev/styles.scss', './dev/styles/*.css', './dev/styles/*.scss'],{
+    return gulpSrc(['./dev/styles.scss', './dev/styles/*.css', './dev/styles/*.scss', './dev/styles/**/*.css'],{
       base: 'src'
     })
     .pipe(plumber({
@@ -126,7 +126,7 @@ gulp.task('styles', function(){
 
 // process JS files and return the stream.
 gulp.task('scripts', function(){
-  return gulpSrc(['./dev/*.js', './dev/**/*.js'])
+  return gulpSrc(['./dev/*.js', './dev/**/*.js', './dev/**/**/*.js'])
     .pipe(plumber({
       errorHandler: onError
     }))
@@ -159,8 +159,8 @@ gulp.task('scripts', function(){
 
 // Optimize Images task
 gulp.task('images', function (){
-  return gulp.src('./dev/images/*.{gif,jpg,png}')
-    .pipe(gulp.dest('./dist/images/'))
+  return gulp.src('./dev/img/*.{gif, jpg, png, svg}')
+    .pipe(gulp.dest('./dist/img/'))
 });
 
 // browser-sync reload
@@ -184,7 +184,8 @@ gulp.task('serveLocal', function(){
   });
 
   gulp.watch(['dev/styles.scss', './dev/*.{scss,css,sass,less,stylus}', './dev/**/*.{scss,css,sass,less,stylus}'], ['styles']);
-  gulp.watch(['*.html', './dev/*.html', './dev/**/*.html'], ['html','index']).on('change', reload);
+  gulp.watch(['*.html', './dev/*.html', './dev/**/*.html'], ['html','index'])
+  gulp.watch(['*.html', './dev/*.html', './dev/**/*.html']).on('change', reload);
   gulp.watch(['./dev/*js', './dev/**/*.js'], ['js-watch']);
 
 });
@@ -220,4 +221,5 @@ gulp.task('prod', ['setProd'], function(){
 gulp.task('default',['setDev'], function(){
   gulp.start('styles', 'html', 'scripts', 'index', 'serveLocal');
 });
+
 
